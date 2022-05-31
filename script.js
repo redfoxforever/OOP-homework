@@ -155,7 +155,7 @@ const burger = () => {
     }
 }
 
-// burger()
+burger()
 
 // class BurgerMenu {
 //     constructor(burger) {
