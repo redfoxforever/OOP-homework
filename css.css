@@ -72,12 +72,6 @@ a {
     padding: 10px;
 }
 
-.header__burger.active {
-    left: 0;
-    background: rgba(0, 0, 0, 0.7);
-    opacity: 1;
-}
-
 .burger-btn {
     cursor: pointer;
     border: none;

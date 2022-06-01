@@ -126,55 +126,71 @@ window.addEventListener('scroll', function infoTitleAnim() {
 
 // header burger start
 
-const burger = () => {
+// const burger = () => {
 
-    const headerBurger = document.querySelector('.header__burger')
-    const menuOpenBtn = document.querySelector('.burger-btn.open')
-    const menuCloseBtn = document.querySelector('.burger-btn.close')
+//     const headerBurger = document.querySelector('.header__burger')
+//     const menuOpenBtn = document.querySelector('.burger-btn.open')
+//     const menuCloseBtn = document.querySelector('.burger-btn.close')
 
-    menuOpenBtn.addEventListener('click', function () {
-        showMenu(headerBurger)
-    })
+//     menuOpenBtn.addEventListener('click', function () {
+//         showMenu(headerBurger)
+//     })
 
-    menuCloseBtn.addEventListener('click', function () {
-        hideMenu(headerBurger)
-    })
+//     menuCloseBtn.addEventListener('click', function () {
+//         hideMenu(headerBurger)
+//     })
 
-    headerBurger.addEventListener('click', function (e) {
-        if (e.target == e.currentTarget) {
-            hideMenu(headerBurger) 
-        }
-    })
+//     headerBurger.addEventListener('click', function (e) {
+//         if (e.target == e.currentTarget) {
+//             hideMenu(headerBurger) 
+//         }
+//     })
 
-    function showMenu(option) {
-        option.classList.toggle('active')
-    }
-
-    function hideMenu(option) {
-        option.classList.remove('active')
-    }
-}
-
-burger()
-
-// class BurgerMenu {
-//     constructor(burger) {
-//         this.mainburger = document.querySelector(burger.mainburger)
-//         this.burgerBtn = document.querySelector(burger.burgerBtn)
-//         this.showMenu()
+//     function showMenu(option) {
+//         option.classList.toggle('active')
 //     }
 
-//     showMenu() {
-//         this.burgerBtn.addEventListener('click', function () {
-//             this.mainburger.toggle('active')        
-//         })
+//     function hideMenu(option) {
+//         option.classList.remove('active')
 //     }
 // }
 
-// const headerBurger = new BurgerMenu({
-//     mainburger: ".header__burger",
-//     burgerBtn: ".menu-open-btn"
-// })
+// burger()
+
+
+class BurgerMenu {
+    constructor(option) {
+        this.mainBurger = document.querySelector(option.el)
+        this.burgerBtn = document.querySelector(option.burgerBtn)
+        this.closeBtn = document.querySelector(option.closeBtn)
+        this.burgerBtn.addEventListener('click', () => this.showMenu())
+        this.closeBtn.addEventListener('click', () => this.hideMenu())
+        this.mainBurger.addEventListener('click', (e) => {
+            if (e.target == e.currentTarget) {
+                this.hideMenu()
+            }
+        })
+    }
+
+    showMenu() {
+        this.mainBurger.style.left = 0
+        this.mainBurger.style.opacity = 1
+        this.mainBurger.style.background = "rgba(0, 0, 0, 0.7)"
+        // this.mainBurger.classList.add('active')
+    }
+    
+    hideMenu() {
+        this.mainBurger.style.left = "-100%"
+        this.mainBurger.style.opacity = 0
+        this.mainBurger.style.background = "none"
+    }
+}
+
+const headerBurger = new BurgerMenu ({
+    el: ".header__burger",
+    burgerBtn: ".burger-btn.open",
+    closeBtn: ".burger-btn.close"
+})
 
 
 // header burger end
@@ -182,44 +198,87 @@ burger()
 
 // header content animation start 
 
-const headerContentAnim = () => {
+// const headerContentAnim = () => {
 
-    const headerContent = document.querySelector('.header__content')
+//     const headerContent = document.querySelector('.header__content')
 
-    headerContent.addEventListener('mouseover', function () {
-        // headerContent.style.transform = `translate(${randomNum(headerContent.offsetLeft)}px, ${randomNum(headerContent.offsetLeft)}px)`
-        // console.log(randomNum(headerContent.offsetLeft));
-    })
+//     headerContent.addEventListener('mouseover', function () {
+//         // headerContent.style.transform = `translate(${randomNum(headerContent.offsetLeft)}px, ${randomNum(headerContent.offsetLeft)}px)`
+//         // console.log(randomNum(headerContent.offsetLeft));
+//     })
 
-    function randomNum(option) {
-        return Math.floor((window.innerWidth - option) * Math.random())
+//     function randomNum() {
+//         return Math.floor(Math.random() * window.innerWidth) + 1
+//     }
+// }
+
+// headerContentAnim()
+
+
+class Moves {
+    constructor(option) {
+        this.move = document.querySelector(option.el)
+        this.nav = document.querySelector(option.nav)
+        this.move.addEventListener('mouseover', () => {
+            this.move.style.marginLeft = this.myRandom(window.innerWidth - this.move.clientWidth) + "px"
+            this.move.style.marginTop = this.myRandom(window.innerHeight - this.move.clientHeight - this.nav.clientHeight) + "px"
+        })
+    }
+
+    myRandom(num) {
+        return Math.floor(Math.random() * num + 1)
     }
 }
 
-headerContentAnim()
+const move = new Moves({
+    el: ".header__content",
+    nav: ".header__nav"
+})
 
 // header content animation end 
 
 
 // header nav animation start
 
-const headerNavAnim = () => {
+// const headerNavAnim = () => {
 
-    const headerNav = document.querySelector('.header__nav')
+//     const headerNav = document.querySelector('.header__nav')
 
-    const headerNavTopSize = headerNav.offsetTop
+//     const headerNavTopSize = headerNav.offsetTop
 
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > headerNav.offsetTop) {
-            headerNav.classList.add('active')
-        } else if (window.scrollY < headerNavTopSize) {
-            headerNav.classList.remove('active')
+//     window.addEventListener('scroll', () => {
+//         if (window.scrollY > headerNav.offsetTop) {
+//             headerNav.classList.add('active')
+//         } else if (window.scrollY < headerNavTopSize) {
+//             headerNav.classList.remove('active')
+//         }
+//     })
+
+// }
+
+// headerNavAnim()
+
+class Sticky {
+    constructor(option) {
+        this.nav = document.querySelector(option.el)
+        this.nav.style.position = "fixed"
+        this.nav.style.top = this.scrollCalc()
+
+        window.addEventListener('scroll', () => this.scrollCalc())
+    }
+
+    scrollCalc() {
+        if (window.innerHeight - this.nav.offsetHeight - window.scrollY > 0) {
+            this.nav.style.top = window.innerHeight - this.nav.offsetHeight - window.scrollY + "px"
+        } else {
+            this.nav.style.top = 0
         }
-    })
-
+    }
 }
 
-headerNavAnim()
+const headerNav = new Sticky({
+    el: ".header__nav"
+})
 
 // header nav animation end
 
